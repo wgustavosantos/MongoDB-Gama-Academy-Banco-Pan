@@ -1,0 +1,51 @@
+****CRIANDO O BANCO DE DADOS****
+use Locadora
+
+****CRIANDO COLLECTION****
+db.createCollection('filmes')
+
+****Inserindo documento****
+db.filmes.insertOne({ nome: "Stalker", diretor: "Andrei Tarkovsky", ano: NumberInt(1979), genero: "drama/ficcao cientifica", classificacao: "12 anos", status: "disponivel"})
+
+****Inserino vários documentos****
+db.filmes.insertMany([
+	{nome: "2001 - Uma Odisseia no Espaco", diretor: "Stanley Kubrick", ano: NumberInt(1968), genero: "drama/ficcao cientifica", classificacao: "12 anos", status: "disponivel"},
+	{nome: "Her", diretor: "Spike Jonze", ano: NumberInt(2013), genero: "drama/ficcao cientifica", classificacao: "14 anos", status: "disponivel"},
+	{nome: "O Sétimo Selo", diretor: "Ingmar Bergman", ano: NumberInt(1957), genero: "drama/fantasia", classificacao: "12 anos", status: "disponivel"},
+	{nome: "Taxi Driver", diretor: "Martin Scorsese", ano:NumberInt(1976), genero: "drama", classificacao: "14 anos", status: "indisponivel"},
+	{nome: "Trainspotting - Sem Limites", diretor: "Danny Boyle", ano:NumberInt(1996), genero: "Drama/Humor negro", classificacao: "16 anos", status: "indisponivel"},
+	{nome: "Interestelar", diretor: "Christopher Nolan", ano: NumberInt(2014), genero: "drama/ficcao cientifica", classificacao: "14 anos", status: "disponivel"},
+	{nome: "A Rede Social", diretor: "David Fincher", ano: NumberInt(2011), genero: "Ficcao Historica", classificacao: "14 anos", status: "indisponivel"}
+])
+
+*Consultando todos os documentos da coleção***
+db.filmes.find()
+
+**CONSULTA COM PROJEÇÃO - Mostrando apenas a field nome ****
+db.getCollection('filmes').find({}, {nome: 1, "_id": 0})
+db.getCollection('filmes').find({}, {nome: 1}) -> retorna com o id
+
+****CONSULTA COM PROJEÇÃO - Mostrando somente as fields com filmes disponíveis****
+db.getCollection('filmes').find({status:"disponivel"})
+
+****UPDATE****
+db.filmes.updateOne({nome: "Her"  },{$set: {status: "indisponivel" } } )
+
+****UPDATE EM VÁRIOS****
+db.filmes.updateMany({}, {$set: {NoEstoque: true} } )
+
+****DELETE ****
+db.filmes.deleteOne({nome: "Trainspotting - Sem Limites"} )
+
+***CONSULTA COM PROJEÇÃO - Mostrando filmes produzidos após os anos 2000 incluido o ano 2000 e pulando 1 resultado
+db.getCollection('filmes').find({ano: {$gte: 2000},}).skip(1)
+							
+
+***CONSULTA COM PROJEÇÃO - Mostrando filmes produzidos antes dos anos 2000 incluido o ano 2000 e limitando a 2 resultados
+db.getCollection('filmes').find({ano: {$lte: 2000},}).limit(2)
+
+****CONSULTA COM PROJEÇÃO - Mostrando filmes ordenados por ano de produção em ordem decrescente
+db.getCollection('filmes').find().sort({ano: -1})
+
+
+
